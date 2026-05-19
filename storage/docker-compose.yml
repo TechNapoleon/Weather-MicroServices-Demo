@@ -1,0 +1,48 @@
+services:
+  postgres:
+    build: .
+    image: weather-demo-postgres-image
+    container_name: weather-demo-postgres
+    environment:
+      POSTGRES_DB: weather_db
+      POSTGRES_USER: weather_user
+      POSTGRES_PASSWORD: weather_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - weather-postgres-data:/var/lib/postgresql/data
+    networks:
+      weather-net:
+        aliases:
+          - postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U weather_user -d weather_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  grafana:
+    build:
+      context: ./grafana
+      dockerfile: Dockerfile
+    container_name: weather-demo-grafana
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - weather-grafana-data:/var/lib/grafana
+    networks:
+      - weather-net
+
+volumes:
+  weather-postgres-data:
+  weather-grafana-data:
+
+networks:
+  weather-net:
+    external: true

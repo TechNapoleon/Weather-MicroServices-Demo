@@ -1,0 +1,14 @@
+services:
+  weather-producer:
+    build: .
+    container_name: weather-demo-producer
+    environment:
+      KAFKA_SERVER: kafka:29092
+      TOPIC: weather.raw
+      SLEEP_SECONDS: 30
+    networks:
+      - weather-net
+
+networks:
+  weather-net:
+    external: true

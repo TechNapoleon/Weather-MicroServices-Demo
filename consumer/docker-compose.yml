@@ -1,0 +1,20 @@
+services:
+  weather-consumer:
+    build: .
+    container_name: weather-demo-consumer
+    environment:
+      KAFKA_SERVER: kafka:29092
+      TOPIC: weather.raw
+
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: weather_db
+      POSTGRES_USER: weather_user
+      POSTGRES_PASSWORD: weather_pass
+
+    networks:
+      - weather-net
+
+networks:
+  weather-net:
+    external: true

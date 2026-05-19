@@ -1,0 +1,14 @@
+Local tools -
+Host: localhost
+Port: 5432
+Database: weather_db
+User: weather_user
+Password: weather_pass
+
+Docker in weater-net - 
+Host: postgres
+Port: 5432
+Database: weather_db
+User: weather_user
+Password: weather_pass
+
